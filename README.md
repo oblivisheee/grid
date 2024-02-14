@@ -5,13 +5,13 @@ This library is designed for creating grids to facilitate the decentralization o
 # How to install?
 
 ```
-pip install grid
+pip install gridcreator
 ```
 
 # How to use?
 
 ```
-import grid
+import grid.grid as grid
 
 your_grid = grid.Grid("example_grid", (3, 3, 3))
 

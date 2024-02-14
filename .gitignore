@@ -2,4 +2,5 @@ venv
 *__pycache__
 build
 dist
-grid.egg-info
+gridcreator.egg-info
+load.txt
