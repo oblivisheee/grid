@@ -1,8 +1,9 @@
-def auto_coordinates(grid):
-    size = grid.shape
-    for x in range(size[0]):
-        for y in range(size[1]):
-            for z in range(size[2]):
+from typing import Tuple
+
+def auto_coordinates(grid) -> Tuple[int, int, int]:
+    for x in range(grid.shape[0]):
+        for y in range(grid.shape[1]):
+            for z in range(grid.shape[2]):
                 if grid[x, y, z] is None:
                     return (x, y, z)
-    return (size[0]-1, size[1]-1, size[2]-1)
+    return (grid.shape[0]-1, grid.shape[1]-1, grid.shape[2]-1)

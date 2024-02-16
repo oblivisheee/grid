@@ -1,4 +1,4 @@
 from . import element
-from . import grid
+from .grid import Grid
 from . import coord
 

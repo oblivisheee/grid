@@ -2,6 +2,7 @@ from typing import AnyStr, Tuple, Any
 import numpy as np
 import hashlib
 class Element:
+    """Class of element."""
     def __init__(self, name: AnyStr, data: Any, coordinates: Tuple[int, int, int], neighbors: np.ndarray, hash=True):
         self.name = name
         self.data = data
@@ -30,4 +31,5 @@ class Element:
         return self.neighbors
     
     def get(self) -> dict:
+        """Get element."""
         return {"name": self.name, "hash": self.hash, "coordinates": self.coordinates, "data": self.data, "neighbors": self.neighbors}
