@@ -1,5 +1,11 @@
 import grid
+my_grid = grid.Grid()
+network = grid.Network("test", my_grid)
 
-grid = grid.Grid()
-grid.load("Cool Grid.pkl")
-print(grid.get()[1, 1, 1])
+
+account = grid.Account()
+account_1 = grid.Account()
+
+network.import_account(account)
+network.import_account(account_1)
+print(network.get_accounts())

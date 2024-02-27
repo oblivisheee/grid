@@ -3,10 +3,24 @@ from typing import AnyStr, Tuple, Any
 from .element import Element
 from .coord import auto_coordinates
 import pickle as pkl
-
+from .hash import sha256
+import json
 class Grid:
     """Class of the Grid."""
     def __init__(self, name: AnyStr="Cool Grid", size: Tuple[int, int, int]=(3, 3, 3)):
+        """
+        Initializes the Cool Grid with the given name and size.
+
+        Args:
+            name (AnyStr, optional): The name of the grid. Defaults to "Cool Grid".
+            size (Tuple[int, int, int], optional): The size of the grid. Defaults to (3, 3, 3).
+
+        Raises:
+            ValueError: If the size is (32, 32, 32), as the size is too big.
+
+        Returns:
+            None
+        """
         if size == (32, 32, 32):
             raise ValueError("The size is too big. We don't have good optimization yet, so we have limits.")
         self.grid_name = name
@@ -17,7 +31,15 @@ class Grid:
             (1, 0, 0), (-1, 0, 0), (0, 1, 0),
             (0, -1, 0), (0, 0, 1), (0, 0, -1)
         ]
-
+    def import_pair(self, access_key, private_key, public_key):
+        """
+        Import account into the grid cache.
+        """
+        to_hash = {access_key, private_key, public_key}
+        hashed = sha256(to_hash)
+        if self.grid[0, 0, 1] is None: # If cache is not initialized, initialize it.
+            self.grid[0, 0, 1] = {"accounts": []}
+        self.grid[0, 0, 1]["accounts"].append(hashed)
     def genesis(self):
         """
         Creates a new element which will be the base of the grid.
@@ -27,7 +49,11 @@ class Grid:
         """
         Creates a new element which will be used to keep cache and save all available info of the grid and element in.
         """
-        self.add("Cache Element", dict({}), coordinates=(0,0,1), hash=False)
+        self.add("Cache Element", dict({"accounts": {}}), coordinates=(0,0,1), hash=False)
+    def addel(self, element: Element):
+        """Adds a new element via class Element."""
+        self._add_to_grid(element.get())
+
     def add(self, name: AnyStr, data: Any, coordinates: Tuple[int, int, int]=None, hash: bool=True):
         """
         Add a new element.
@@ -82,7 +108,7 @@ class Grid:
     
     def sethash(self, coordinates: Tuple[int, int, int], hash: AnyStr):
         self.grid[coordinates]["hash"] = hash
-        
+
     def upn_all(self):
         """
         Updates neighbors of all elements of the grid.
