@@ -2,9 +2,7 @@ import numpy as np
 from typing import AnyStr, Tuple, Any
 from .element import Element
 from .coord import auto_coordinates
-import pickle as pkl
 from .hash import sha256
-import json
 class Grid:
     """Class of the Grid."""
     def __init__(self, name: AnyStr="Cool Grid", size: Tuple[int, int, int]=(3, 3, 3)):
@@ -37,9 +35,7 @@ class Grid:
         """
         to_hash = {access_key, private_key, public_key}
         hashed = sha256(to_hash)
-        if self.grid[0, 0, 1] is None: # If cache is not initialized, initialize it.
-            self.grid[0, 0, 1] = {"accounts": []}
-        self.grid[0, 0, 1]["accounts"].append(hashed)
+        self.grid[0, 0, 1]["data"]["accounts"].append(f"{self.grid_name}{hashed}")
     def genesis(self):
         """
         Creates a new element which will be the base of the grid.
@@ -49,7 +45,7 @@ class Grid:
         """
         Creates a new element which will be used to keep cache and save all available info of the grid and element in.
         """
-        self.add("Cache Element", dict({"accounts": {}}), coordinates=(0,0,1), hash=False)
+        self.add("Cache Element", dict({"accounts": []}), coordinates=(0,0,1), hash=False)
     def addel(self, element: Element):
         """Adds a new element via class Element."""
         self._add_to_grid(element.get())
@@ -129,12 +125,11 @@ class Grid:
 
     def save(self):
         """Save grid in .pkl format."""
-        with open(f"{self.grid_name}.pkl", 'wb') as f:
-            pkl.dump(self.grid, f)
+        np.savez_compressed(f'{self.grid_name}.npz', arr=self.grid)
     
     def load(self, filename):
         """Load grid in .pkl format."""
-        with open(filename, 'rb') as f:
-            self.grid = pkl.load(f)
+        self.grid = np.load(filename, allow_pickle=True)['arr']
+        
     def setneighbors(self, coordinates: Tuple[int, int, int], neighbors):
         self.grid[coordinates]["neighbors"] = neighbors

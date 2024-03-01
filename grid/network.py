@@ -20,7 +20,7 @@ class Network:
     def _check(self):
         if self.grid.get()[0, 0, 0] is None:
             self.grid.genesis()
-        if self.grid.get()[0, 0, 0] is None:
+        if self.grid.get()[0, 0, 1] is None:
             self.grid.cache()
     def get_accounts(self):
         return self.grid.get()[0, 0, 1]["accounts"]
