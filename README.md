@@ -11,7 +11,7 @@ pip install gridcreator
 # How to use?
 
 ```
-import grid.grid as grid
+import grid
 
 your_grid = grid.Grid("example_grid", (3, 3, 3))
 
