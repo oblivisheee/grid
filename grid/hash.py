@@ -13,6 +13,7 @@ def generate_private_key():
     key = RSA.generate(2048)
     return key.export_key()
 
+# I was young... Don't judge me pls :((
 def generate_public_key(private_key, access_key):
     return sha256(str(private_key) + str(access_key))
 
